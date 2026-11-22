@@ -1,0 +1,15 @@
+OrderID,Category,Region,Revenue,Quantity
+001,Food,North,500,2
+002,Tech,South,1200,1
+003,Food,South,300,3
+004,Tech,North,2000,2
+005,Home,West,1100,1
+006,Tech,East,1600,2
+007,Food,East,450,3
+008,Home,North,900,2
+009,Tech,North,800,1
+010,Food,West,300,2
+011,Tech,South,400,1
+012,Home,South,700,1
+013,Home,East,600,2
+014,Food,North,450,2

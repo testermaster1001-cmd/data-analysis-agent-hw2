@@ -1,0 +1,14 @@
+{
+  "generated_at_utc": "2026-11-22T14:00:21.026411+00:00",
+  "simulation_only": true,
+  "case_results": [
+    {
+      "id": "F01",
+      "passed": true
+    },
+    {
+      "id": "F02",
+      "passed": true
+    }
+  ]
+}

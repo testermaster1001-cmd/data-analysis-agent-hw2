@@ -1,0 +1,103 @@
+{
+  "case_id": "F02",
+  "case_name": "非數值欄位求平均",
+  "test_type": "offline_scripted_llm_langgraph_real_pandas_tools",
+  "is_live_openai_test": false,
+  "dataset": "sample_sales.csv",
+  "question": "請計算 Category 欄位的平均值。",
+  "injected_tool_call": {
+    "tool": "calculate_statistics",
+    "args": {
+      "column": "Category",
+      "operation": "mean",
+      "source_id": "dataset"
+    }
+  },
+  "expected_error": "TYPE_MISMATCH",
+  "observed_failure_codes": [
+    "TYPE_MISMATCH"
+  ],
+  "root_cause": "Category 是文字型別（object），不符合 mean 運算需要數值的條件。",
+  "resolution": "回報資料型態不符，要求改用數值欄位或其他適合的統計方式。",
+  "agent_status": "needs_clarification",
+  "agent_answer": "尚未取得成功的資料分析工具結果，以下內容未經數值驗證：\nCategory 是文字分類欄位，不能計算數值平均；請改用數值欄位。",
+  "tool_executions": 1,
+  "successful_tools": 0,
+  "failed_tools": 1,
+  "trace": [
+    {
+      "event": "llm_call",
+      "stage": "planner",
+      "attempt": 1,
+      "status": "success",
+      "elapsed_seconds": 0.0
+    },
+    {
+      "event": "plan",
+      "summary": "先依照使用者指定的欄位嘗試計算，遇到錯誤則回報。"
+    },
+    {
+      "event": "llm_call",
+      "stage": "decision",
+      "attempt": 1,
+      "status": "success",
+      "elapsed_seconds": 0.0
+    },
+    {
+      "event": "decision",
+      "actions": [
+        {
+          "tool": "calculate_statistics",
+          "args": {
+            "column": "Category",
+            "operation": "mean",
+            "source_id": "dataset"
+          }
+        }
+      ],
+      "action_type": "tool_call"
+    },
+    {
+      "event": "observation",
+      "tool": "calculate_statistics",
+      "args": {
+        "column": "Category",
+        "operation": "mean",
+        "source_id": "dataset"
+      },
+      "result": {
+        "ok": false,
+        "error": {
+          "code": "TYPE_MISMATCH",
+          "message": "欄位 Category 不是數值型態，無法運算。"
+        }
+      },
+      "elapsed_seconds": 0.0004
+    },
+    {
+      "event": "llm_call",
+      "stage": "decision",
+      "attempt": 1,
+      "status": "success",
+      "elapsed_seconds": 0.0
+    },
+    {
+      "event": "decision",
+      "actions": [],
+      "action_type": "respond"
+    },
+    {
+      "event": "final",
+      "status": "needs_clarification"
+    }
+  ],
+  "checks": {
+    "tool_call_was_executed": true,
+    "tool_error_returned": true,
+    "no_successful_data_tool": true,
+    "failure_count_is_one": true,
+    "did_not_claim_completed": true,
+    "answer_indicates_uncertainty": true
+  },
+  "passed": true
+}

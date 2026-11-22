@@ -1,0 +1,103 @@
+{
+  "case_id": "F01",
+  "case_name": "欄位不存在",
+  "test_type": "offline_scripted_llm_langgraph_real_pandas_tools",
+  "is_live_openai_test": false,
+  "dataset": "sample_sales.csv",
+  "question": "請計算 Money 欄位的平均值。",
+  "injected_tool_call": {
+    "tool": "calculate_statistics",
+    "args": {
+      "column": "Money",
+      "operation": "mean",
+      "source_id": "dataset"
+    }
+  },
+  "expected_error": "COLUMN_NOT_FOUND",
+  "observed_failure_codes": [
+    "COLUMN_NOT_FOUND"
+  ],
+  "root_cause": "CSV Schema 沒有 Money 欄；不能推定 Money 與 Revenue 同義。",
+  "resolution": "回報缺少欄位，要求使用者確認實際欄位名稱。",
+  "agent_status": "needs_clarification",
+  "agent_answer": "尚未取得成功的資料分析工具結果，以下內容未經數值驗證：\nCSV 沒有 Money 欄位。請確認要分析哪個欄位；不能擅自將 Money 當成 Revenue。",
+  "tool_executions": 1,
+  "successful_tools": 0,
+  "failed_tools": 1,
+  "trace": [
+    {
+      "event": "llm_call",
+      "stage": "planner",
+      "attempt": 1,
+      "status": "success",
+      "elapsed_seconds": 0.0
+    },
+    {
+      "event": "plan",
+      "summary": "先依照使用者指定的欄位嘗試計算，遇到錯誤則回報。"
+    },
+    {
+      "event": "llm_call",
+      "stage": "decision",
+      "attempt": 1,
+      "status": "success",
+      "elapsed_seconds": 0.0
+    },
+    {
+      "event": "decision",
+      "actions": [
+        {
+          "tool": "calculate_statistics",
+          "args": {
+            "column": "Money",
+            "operation": "mean",
+            "source_id": "dataset"
+          }
+        }
+      ],
+      "action_type": "tool_call"
+    },
+    {
+      "event": "observation",
+      "tool": "calculate_statistics",
+      "args": {
+        "column": "Money",
+        "operation": "mean",
+        "source_id": "dataset"
+      },
+      "result": {
+        "ok": false,
+        "error": {
+          "code": "COLUMN_NOT_FOUND",
+          "message": "欄位不存在：Money"
+        }
+      },
+      "elapsed_seconds": 0.0005
+    },
+    {
+      "event": "llm_call",
+      "stage": "decision",
+      "attempt": 1,
+      "status": "success",
+      "elapsed_seconds": 0.0
+    },
+    {
+      "event": "decision",
+      "actions": [],
+      "action_type": "respond"
+    },
+    {
+      "event": "final",
+      "status": "needs_clarification"
+    }
+  ],
+  "checks": {
+    "tool_call_was_executed": true,
+    "tool_error_returned": true,
+    "no_successful_data_tool": true,
+    "failure_count_is_one": true,
+    "did_not_claim_completed": true,
+    "answer_indicates_uncertainty": true
+  },
+  "passed": true
+}

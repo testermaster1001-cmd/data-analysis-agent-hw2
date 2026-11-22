@@ -1,0 +1,17 @@
+# Build the runtime image first:
+#   podman build -t data-analysis-agent:hw2 -f Containerfile .
+# Then build and run this offline test image:
+#   podman build -t data-analysis-agent:hw2-test -f Containerfile.test .
+#   podman run --rm data-analysis-agent:hw2-test
+FROM localhost/data-analysis-agent:hw2
+
+USER root
+COPY requirements-dev.txt /app/requirements-dev.txt
+RUN pip install --no-cache-dir -r /app/requirements-dev.txt
+COPY tests/ /app/tests/
+COPY scripts/ /app/scripts/
+COPY pytest.ini /app/pytest.ini
+COPY documents/evidence/success_case/ /app/documents/evidence/success_case/
+
+USER app
+ENTRYPOINT ["python", "-m", "pytest", "-q"]
